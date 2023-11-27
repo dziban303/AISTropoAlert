@@ -38,20 +38,23 @@ MASTODON_URL="https://mastodon.social/api/v1/statuses"
 
 # what is your Mastodon token (this should remain a secret, don't share it anywhere!!!)
 MASTODON_TOKEN=replace_this_with_your_mastondon_token
+
+# receiver location
+LOC=Somewhere
+
 ############################################################
 
+NOW=$(date)
 # get the ist of ships from AIS-Catcher's JSON web api using curl, search the JSON for ships further away than X miles using jq, then sort and find further away ship
-ships=`curl -s $URL/ships.json  | jq --arg dist $DIST  '.ships[] | select(.distance>=($dist|tonumber)) | .distance' | sort -r | head -1 `
-echo Furthest ship seen was $ships miles away further than $DIST miles away!
+SHIPS=$(curl -s $URL/ships.json  | jq --arg dist $DIST '.ships[] | select(.distance>=($dist|tonumber)) | .distance' | sort -r | head -1)
+echo "Furthest ship seen was $SHIPS miles away further than $DIST miles away!"
 
 # if we have any resuts, post an alert to Mastodon, otherwise do nothing
 
-if [ "$ships"  ]
-then
-echo TOPO! writing information to Mastodon!
-now=$(date)
-curl $MASTODON_URL -H "Authorization: Bearer $MASTODON_TOKEN" -F "status=Possible Tropo Near REPLACEME: AIS reports from $ships miles away seen at $now. Alerts triggered when ships seen over $DIST miles away."
-
+if [ "$ships" ]
+    then
+    echo "TOPO! writing information to Mastodon!"
+    curl $MASTODON_URL -H "Authorization: Bearer $MASTODON_TOKEN" -F "status=Possible Tropo Near $LOC: AIS reports from $SHIPS nautical miles away seen at $NOW. Alerts triggered when ships seen over $DIST nautical miles away."
 else
-echo No topo! Not doing anything 
+    echo "No topo! Not doing anything"
 fi
