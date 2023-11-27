@@ -30,16 +30,16 @@
 DIST=20
 
 # What is the full URL including port number of your AIS-catcher web server instance 
-URL=raspberrypi.local:8100
+URL="raspberrypi.local:8100"
 
 # what is the posting URL for your Mastodon server e.g. "https://mastodon.social/api/v1/statuses"
 MASTODON_URL="https://airwaves.social/api/v1/statuses"
 
 # what is your Mastodon token (this should remain a secret, don't share it anywhere!!!)
-MASTODON_TOKEN=replace_this_with_your_mastondon_token
+MASTODON_TOKEN="replace_this_with_your_mastondon_token"
 
 # receiver location
-LOC=my_location
+LOC="my_location"
 
 ############################################################
 
